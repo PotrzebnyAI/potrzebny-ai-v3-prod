@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "framework": "nextjs",
+  "regions": ["fra1"],
+  "installCommand": "cd web && npm ci",
+  "buildCommand": "cd web && npm run build",
+  "outputDirectory": "web/.next",
+  "env": {
+    "NEXTAUTH_URL": "https://potrzebny.ai",
+    "NEXT_PUBLIC_APP_URL": "https://potrzebny.ai"
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/health",
+      "destination": "/api/admin/health"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/subscription-reminders",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-expired-sessions",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}
