@@ -125,7 +125,7 @@ jobs:
 
       - name: Notify Slack on failure
         if: failure()
-        uses: slackapi/slack-github-action@v1
+        uses: slackapi/slack-github-action@v2
         with:
           payload: |
             {
@@ -151,7 +151,7 @@ jobs:
 
       - name: Notify Slack on success
         if: success() && github.ref == 'refs/heads/main'
-        uses: slackapi/slack-github-action@v1
+        uses: slackapi/slack-github-action@v2
         with:
           payload: |
             {
